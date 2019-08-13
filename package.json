@@ -1,0 +1,31 @@
+{
+  "name": "sud",
+  "version": "1.0.0",
+  "description": "Board game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -r esm server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexjharrison/SuD.git"
+  },
+  "keywords": [
+    "board",
+    "game"
+  ],
+  "author": "Alex Harrison",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexjharrison/SuD/issues"
+  },
+  "homepage": "https://github.com/alexjharrison/SuD#readme",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
