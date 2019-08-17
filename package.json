@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/alexjharrison/SuD#readme",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1"
   },
