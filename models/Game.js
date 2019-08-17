@@ -17,17 +17,108 @@ export default class Game {
     this.turn = 0;
     this.selectedTileId = null;
     this.isLastRound = false;
+    this.winner = null;
   }
+
+  //////// Front End Requests ////////////
+
+  // Add player to game, add more circles, max at 4
+  addPlayer(name) {
+    const numPlayers = this.players.length;
+    if (numPlayers === 4) return;
+    else if (numPlayers >= 2) this.circles.push([], []);
+    this.players.push(new Board(name, numPlayers));
+  }
+
+  // Player picked tile from circle or pot
+  tilePicked({ playerNum, tileId }) {
+    if (playerNum !== this.turn) return;
+    this.selectedTileId = tileId;
+  }
+
+  // player placed tile into a row
+  tilePlaced({ playerNum, rowId }) {
+    // get tile color
+    const selectedTile = this.allTiles.filter(
+      ({ id }) => id === this.selectedTileId
+    )[0];
+    const color = selectedTile.color;
+
+    // find circle index of tile
+    let circleIdx = null;
+    this.circles.map((circle, i) => {
+      if (circle.includes(this.selectedTileId)) circleIdx = i;
+    });
+
+    // tile in circle
+    const playerBoard = this.players[playerNum];
+    if (circleIdx) {
+      const relatedTiles = this.circles[circleIdx].filter(
+        tile => tile.color === color
+      );
+      const unrelatedTiles = this.circles[circleIdx].filter(
+        tile => tile.color !== color
+      );
+
+      //push unrelated tiles to pot
+      unrelatedTiles.map(tile => this.pot.push({ ...tile }));
+
+      // push related tiles to player board
+      relatedTiles.map(tile => playerBoard.tilePlayed(tile, rowId));
+
+      //empty circle
+      this.circles[circleIdx] = [];
+    }
+    // tile in pot
+    else {
+      const relatedTiles = this.pot.filter(tile => tile.color === color);
+
+      // push related tiles to player board
+      relatedTiles.map(tile => playerBoard.tilePlayed(tile, rowId));
+    }
+
+    // check if round ended / calcuate board scores & reset
+    if (this.circles.flat().length === 0 && this.pot.length === 0) {
+      this.players.forEach(board => {
+        board.roundEnd();
+      });
+      this.populateCircles();
+    }
+
+    // check if game ended / calculate bonus
+    if (this.isGameOver()) {
+      this.players.map(board => board);
+    }
+
+    // calculate winner
+    this.winner = this.players.reduce(
+      (winrar, player) => {
+        if (player.score > winrar) return player;
+      },
+      [{ score: -1 }]
+    );
+  }
+
+  ////////  Pure Game Logic  //////////////
 
   // load tiles onto circles from bag
   populateCircles() {
     this.shuffleTiles();
+    this.circles = this.circles.map(() => []);
     this.circles.map(tileArr => {
       tileArr.push(this.bag.pop());
       tileArr.push(this.bag.pop());
       tileArr.push(this.bag.pop());
       tileArr.push(this.bag.pop());
     });
+  }
+
+  // determine if the game is over
+  isGameOver() {
+    return this.players.reduce(
+      (acc, board) => acc || board.isGameOver(),
+      false
+    );
   }
 
   // Shuffle array of tile objects
@@ -42,14 +133,6 @@ export default class Game {
   refillBag() {
     this.bag = [...this.discard];
     this.discard = [];
-  }
-
-  // Add player to game, add more circles, max at 4
-  addPlayer(name) {
-    if (this.players.length === 4) return null;
-    else if (this.players.length >= 2) this.circles.push([], []);
-    this.players.push(new Board(name));
-    return this.players.length - 1;
   }
 
   // Instantiate all tiles

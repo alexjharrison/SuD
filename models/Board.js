@@ -3,13 +3,16 @@ import ScoringRow from './ScoringRow';
 import PenaltyRow from './PenaltyRow';
 
 export default class Board {
-  constructor(name) {
+  constructor(name, id) {
     this.name = name;
+    this.id = id;
     this.score = 0;
     this.grid = new Grid();
     this.scoringRows = [1, 2, 3, 4, 5].map(slots => new ScoringRow(slots));
     this.penaltyRow = new PenaltyRow();
   }
+
+  // if row entered is null, goes straight to trash
   tilePlayed(tile, row) {
     if (row) {
       const extraTile = this.scoringRows[row].addTile(tile);
