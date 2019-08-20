@@ -21,7 +21,7 @@ export default (server, game) => {
 
     // Tile placed on board
     socket.on('TILE_PLACED', ({ playerNum, rowId }) => {
-      game.tilePlaced({ playerNum, tileId });
+      game.tilePlaced({ playerNum, rowId });
       io.emit('UPDATE_GAME', game);
     });
 
