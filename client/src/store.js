@@ -5,11 +5,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    game: null
+    game: null,
+    myName: 'Alex'
+  },
+  getters: {
+    myBoard({ game, myName }) {
+      return game.players.filter(({ name }) => name === myName)[0];
+    },
+    otherBoards({ game, myName }) {
+      return game.players.filter(({ name }) => name !== myName);
+    }
   },
   mutations: {
     SOCKET_UPDATE_GAME(state, payload) {
       state.game = { ...payload };
+    },
+    setName(state, name) {
+      state.myName = name;
     }
   },
   actions: {}
