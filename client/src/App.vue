@@ -1,13 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>|
       <router-link to="/game/test">test</router-link>
-    </div>
+    </div>-->
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
+body {
+  background-color: #dbf8ff;
+}
 </style>
