@@ -14,7 +14,7 @@ export default class Board {
 
   // if row entered is null, goes straight to trash
   tilePlayed(tile, row) {
-    if (row) {
+    if (typeof row === 'number') {
       const extraTile = this.scoringRows[row].addTile(tile);
       if (extraTile) this.penaltyRow.addTile(tile);
     } else {

@@ -28,7 +28,12 @@ export default class ScoringRow {
 
   addTile(tile) {
     // return null if slots are filled or incorrect color
-    if (this.slotsFilled() || this.currentColor() !== tile.color) return tile;
+    const slotsFilled = this.slotsFilled();
+    const color = this.currentColor();
+    if (this.currentColor()) {
+      if (slotsFilled === this.slots.length || color !== tile.color)
+        return tile;
+    }
 
     // place tile into first null slot
     for (let i = 0; i < this.slots.length; i++) {

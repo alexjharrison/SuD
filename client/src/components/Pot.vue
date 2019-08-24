@@ -1,7 +1,7 @@
 <template>
   <div id="pot">
     <div class="p-2 d-flex flex-wrap justify-content-center">
-      <tile v-for="tile in tiles" :key="tile.id" :tile="tile" />
+      <tile v-for="tile in tiles" :key="tile.id" :tile="tile" :selected="isTileHighlighted(tile)" />
     </div>
   </div>
 </template>
@@ -12,7 +12,22 @@ export default {
   components: {
     Tile
   },
-  props: ["tiles"]
+  props: ["tiles"],
+  methods: {
+    isTileHighlighted(tile) {
+      const selectedTileId = this.$store.state.game.selectedTileId;
+      const selectedTile = this.tiles.filter(
+        ({ id }) => id === selectedTileId
+      )[0];
+      // check if tile is in circle
+      if (selectedTile) {
+        if (tile.color === selectedTile.color) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
 };
 </script>
 

@@ -43,4 +43,13 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+.one {
+  background-image: url("~@/assets/one.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.cursor-pointer:hover {
+  cursor: pointer;
+}
 </style>

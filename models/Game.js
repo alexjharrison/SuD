@@ -32,12 +32,16 @@ export default class Game {
 
   // Player picked tile from circle or pot
   tilePicked({ playerNum, tileId }) {
-    if (playerNum !== this.turn) return;
+    // if (playerNum !== this.turn) return;
     this.selectedTileId = tileId;
   }
 
   // player placed tile into a row
   tilePlaced({ playerNum, rowId }) {
+    // incrementTurn
+    this.turn++;
+    if (this.turn === this.players.length) this.turn === 0;
+
     // get tile color
     const selectedTile = this.allTiles.filter(
       ({ id }) => id === this.selectedTileId
@@ -46,8 +50,10 @@ export default class Game {
 
     // find circle index of tile
     let circleIdx = null;
-    this.circles.map((circle, i) => {
-      if (circle.includes(this.selectedTileId)) circleIdx = i;
+    this.circles.map((tiles, i) => {
+      tiles.map(({ id }) => {
+        if (this.selectedTileId === id) circleIdx = i;
+      });
     });
 
     // tile in circle
@@ -78,7 +84,11 @@ export default class Game {
     }
 
     // check if round ended / calcuate board scores & reset
-    if (this.circles.flat().length === 0 && this.pot.length === 0) {
+    const tilesInCircles = this.circles.reduce(
+      (acc, tiles) => acc + tiles.length,
+      0
+    );
+    if (tilesInCircles + this.pot.length === 0) {
       this.players.forEach(board => {
         board.roundEnd();
       });

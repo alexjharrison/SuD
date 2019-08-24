@@ -2,8 +2,17 @@
   <div id="board">
     <div class="main-tiles-row">
       <div class="slots mr-2">
-        <div v-for="(row,i) in scoringRows" :key="i" class="d-flex flex-row-reverse">
-          <div v-for="(square,idx) in row.slots" :class="squareClass" :key="idx"></div>
+        <div
+          v-for="(row,i) in scoringRows"
+          :key="i"
+          :class="'d-flex flex-row-reverse' + hoverClass"
+          @click="submitRow(i)"
+        >
+          <div
+            v-for="(square,idx) in row.slots"
+            :class="squareClass + (square ? square.color : '' )"
+            :key="idx"
+          ></div>
         </div>
       </div>
       <div class="grid">
@@ -33,9 +42,29 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["myBoard"]),
+    ...mapGetters(["myBoard", "playerTurn"]),
     squareClass() {
       return this.myBoard.name !== this.name ? "square shrink " : "square ";
+    },
+    selectedTileId() {
+      return this.$store.state.game.selectedTileId;
+    },
+    hoverClass() {
+      const hoverable =
+        this.selectedTileId &&
+        this.playerTurn(this.$store.state.myName) &&
+        this.myBoard.name === this.name;
+      return hoverable ? " hoverable" : "";
+    }
+  },
+  methods: {
+    submitRow(rowId) {
+      if (
+        this.playerTurn(this.myBoard.name) &&
+        this.myBoard.name === this.name &&
+        this.selectedTileId
+      )
+        this.$socket.emit("TILE_PLACED", { rowId, playerNum: this.myBoard.id });
     }
   }
 };
@@ -76,6 +105,14 @@ export default {
   margin: 2px;
   // border: 1px solid blue;
   box-shadow: 7px 7px 17px 6px rgba(148, 148, 148, 0.404);
+}
+
+.hoverable > .square {
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+.hoverable:hover > .square {
+  background-color: rgb(202, 202, 202);
 }
 
 .faded {
