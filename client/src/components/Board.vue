@@ -46,7 +46,8 @@ export default {
   border: 2px solid rgb(192, 187, 180);
   box-shadow: 4px 4px 30px 0px rgb(177, 177, 177);
   padding: 5px;
-  background-image: url("~@/assets/texture.jpg");
+  // background-image: url("~@/assets/texture.jpg");
+  background-color: #f8c994;
 
   border-radius: 10px;
   .main-tiles-row {
