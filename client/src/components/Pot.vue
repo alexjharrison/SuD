@@ -1,14 +1,18 @@
 <template>
   <div id="pot">
-    <img src="~@/assets/pot.svg" alt="pot" />
+    <div class="p-2 d-flex flex-wrap justify-content-center">
+      <tile v-for="tile in tiles" :key="tile.id" :tile="tile" />
+    </div>
   </div>
 </template>
 
 <script>
+import Tile from "@/components/Tile";
 export default {
-  data() {
-    return {};
-  }
+  components: {
+    Tile
+  },
+  props: ["tiles"]
 };
 </script>
 
@@ -28,6 +32,9 @@ export default {
   border-radius: 10px;
   height: 100%;
   margin-bottom: 10px;
+  background-image: url("~@/assets/pot.svg");
+  background-repeat: no-repeat;
+  background-position: center;
   path {
     fill: blue !important;
   }

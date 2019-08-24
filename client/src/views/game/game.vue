@@ -2,9 +2,11 @@
   <div v-if="this.$store.state.game">
     <div class="contain">
       <div class="d-flex justify-content-around">
-        <h4 v-if="otherBoards[0]">{{otherBoards[0].name}}: {{otherBoards[0].score}}</h4>
-        <h4 v-if="otherBoards[1]">{{otherBoards[1].name}}: {{otherBoards[1].score}}</h4>
-        <h4 v-if="otherBoards[2]">{{otherBoards[2].name}}: {{otherBoards[2].score}}</h4>
+        <h4
+          v-for="board in otherBoards"
+          :key="board.id"
+          :class="playerNameClass(board.id)"
+        >{{board.name}}: {{board.score}}</h4>
       </div>
       <div class="other-boards-row">
         <div class="board other-boards" v-for="(board,i) in otherBoards" :key="i">
@@ -12,15 +14,15 @@
         </div>
       </div>
       <div id="circles" class="d-flex justify-content-around">
-        <center-circle v-for="(circle,i) in circles" :key="i" />
+        <center-circle v-for="(circle,i) in circles" :key="i" :tiles="circle" />
       </div>
       <div class="d-flex">
         <div class="flex-grow-1 d-flex flex-column justify-content-between">
-          <pot />
+          <pot :tiles="pot" />
           <div class="d-flex align-items-center px-3">
             <b-img fluid src="@/assets/logo.png" alt="sud logo" class="logo-img" />
             <div class="text-center w-100">
-              <h2>{{myBoard.name}}</h2>
+              <h2 :class="playerNameClass(myBoard.id)">{{myBoard.name}}</h2>
               <h3>Score: {{myBoard.score}}</h3>
             </div>
           </div>
@@ -52,8 +54,16 @@ export default {
     circles() {
       return this.$store.state.game.circles;
     },
+    pot() {
+      return this.$store.state.game.pot;
+    },
     playerBoard() {
       return this.$store.state.game.players[this.playerNum];
+    }
+  },
+  methods: {
+    playerNameClass(id) {
+      return id === this.$store.state.game.turn ? "turn" : "";
     }
   }
 };
@@ -82,6 +92,20 @@ export default {
 .logo-img {
   border-radius: 20px;
   max-width: 180px;
+}
+
+h2,
+h4 {
+  padding: 5px;
+  display: inline;
+  border-radius: 5px;
+  margin: 6px 0;
+  border: 1px solid transparent;
+}
+.turn {
+  transition: 0.8s ease-in-out background-color, 0.8s ease-in-out border;
+  border: 1px solid rgb(224, 167, 44);
+  background-color: beige;
 }
 
 @media only screen and (max-width: 900px) {

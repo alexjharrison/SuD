@@ -1,12 +1,12 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     game: null,
-    myName: 'Alex'
+    myName: "Alex"
   },
   getters: {
     myBoard({ game, myName }) {
@@ -14,6 +14,10 @@ export default new Vuex.Store({
     },
     otherBoards({ game, myName }) {
       return game.players.filter(({ name }) => name !== myName);
+    },
+    playerTurn({ game }, playerName) {
+      const currentTurnId = game.turn;
+      return game.players[currentTurnId] === playerName;
     }
   },
   mutations: {

@@ -46,7 +46,7 @@ export default {
   border: 2px solid rgb(192, 187, 180);
   box-shadow: 4px 4px 30px 0px rgb(177, 177, 177);
   padding: 5px;
-  // background-image: url("~@/assets/texture.jpg");
+  background-image: url("~@/assets/texture.jpg");
   background-color: #f8c994;
 
   border-radius: 10px;
@@ -77,36 +77,7 @@ export default {
   // border: 1px solid blue;
   box-shadow: 7px 7px 17px 6px rgba(148, 148, 148, 0.404);
 }
-.red {
-  background-color: #f90a0a;
-}
-.blue {
-  background-color: #0b72c0;
-}
-.orange {
-  background-color: #fde047;
-  background-image: url("~@/assets/yellow.svg");
-  background-size: cover;
-  // background-size: 100%, 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.teal {
-  background-color: #1ecdf3;
-  background-image: url("~@/assets/teal.svg");
-  background-size: cover;
-  // background-size: 100%, 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.black {
-  background-image: url("~@/assets/black.svg");
-  background-color: #000;
-  background-size: cover;
-  // background-size: 100%, 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+
 .faded {
   opacity: 0.2;
 }
