@@ -21,6 +21,7 @@ export default {
       )[0];
       // check if tile is in circle
       if (selectedTile) {
+        if (tile.color === "one") return true;
         if (tile.color === selectedTile.color) {
           return true;
         }

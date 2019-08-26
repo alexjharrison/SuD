@@ -9,6 +9,19 @@
   </div>
 </template>
 
+<script>
+import { mapMutations } from "vuex";
+export default {
+  methods: {
+    ...mapMutations(["setName"])
+  },
+  mounted() {
+    const name = window.prompt("enter name");
+    if (name) this.setName(name);
+  }
+};
+</script>
+
 <style lang="scss">
 body {
   background-color: #dbf8ff !important;

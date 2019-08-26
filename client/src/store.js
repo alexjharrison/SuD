@@ -18,6 +18,9 @@ export default new Vuex.Store({
     playerTurn: ({ game }) => playerName => {
       const currentTurnId = game.turn;
       return game.players[currentTurnId].name === playerName;
+    },
+    isMyTurn: ({ game, myName }) => {
+      return game.players[game.turn].name === myName;
     }
   },
   mutations: {

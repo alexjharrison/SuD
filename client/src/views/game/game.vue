@@ -27,7 +27,7 @@
             </div>
           </div>
         </div>
-        <board id="main-board" class="board" v-bind="playerBoard" />
+        <board id="main-board" class="board" v-bind="myBoard" />
       </div>
     </div>
   </div>
@@ -45,9 +45,7 @@ export default {
     Pot
   },
   data() {
-    return {
-      playerNum: 0
-    };
+    return {};
   },
   computed: {
     ...mapGetters(["otherBoards", "myBoard"]),
@@ -56,9 +54,6 @@ export default {
     },
     pot() {
       return this.$store.state.game.pot;
-    },
-    playerBoard() {
-      return this.$store.state.game.players[this.playerNum];
     }
   },
   methods: {

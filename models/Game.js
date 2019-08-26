@@ -40,7 +40,7 @@ export default class Game {
   tilePlaced({ playerNum, rowId }) {
     // incrementTurn
     this.turn++;
-    if (this.turn === this.players.length) this.turn === 0;
+    if (this.turn === this.players.length) this.turn = 0;
 
     // get tile color
     const selectedTile = this.allTiles.filter(
@@ -58,7 +58,7 @@ export default class Game {
 
     // tile in circle
     const playerBoard = this.players[playerNum];
-    if (circleIdx) {
+    if (typeof circleIdx === 'number') {
       const relatedTiles = this.circles[circleIdx].filter(
         tile => tile.color === color
       );
@@ -70,7 +70,10 @@ export default class Game {
       unrelatedTiles.map(tile => this.pot.push({ ...tile }));
 
       // push related tiles to player board
-      relatedTiles.map(tile => playerBoard.tilePlayed(tile, rowId));
+      relatedTiles.map(tile => {
+        const overflowTile = playerBoard.tilePlayed(tile, rowId);
+        if (overflowTile) this.discard.push(overflowTile);
+      });
 
       //empty circle
       this.circles[circleIdx] = [];
@@ -78,9 +81,19 @@ export default class Game {
     // tile in pot
     else {
       const relatedTiles = this.pot.filter(tile => tile.color === color);
+      if (this.pot[0].color === 'one') {
+        relatedTiles.push(this.pot[0]);
+        this.pot = this.pot.filter(({ color }) => color !== 'one');
+      }
 
       // push related tiles to player board
-      relatedTiles.map(tile => playerBoard.tilePlayed(tile, rowId));
+      relatedTiles.map(tile => {
+        const overflowTile = playerBoard.tilePlayed(tile, rowId);
+        if (overflowTile) this.discard.push(overflowTile);
+      });
+
+      // remove tile color from pot
+      this.pot = this.pot.filter(tile => tile.color !== color);
     }
 
     // check if round ended / calcuate board scores & reset
@@ -90,7 +103,7 @@ export default class Game {
     );
     if (tilesInCircles + this.pot.length === 0) {
       this.players.forEach(board => {
-        board.roundEnd();
+        this.discard.concat(board.roundEnd());
       });
       this.populateCircles();
     }
@@ -107,6 +120,9 @@ export default class Game {
       },
       [{ score: -1 }]
     );
+
+    //reset selected tile
+    this.selectedTileId = null;
   }
 
   ////////  Pure Game Logic  //////////////

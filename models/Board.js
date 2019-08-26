@@ -16,9 +16,12 @@ export default class Board {
   tilePlayed(tile, row) {
     if (typeof row === 'number') {
       const extraTile = this.scoringRows[row].addTile(tile);
-      if (extraTile) this.penaltyRow.addTile(tile);
+      if (extraTile) {
+        this.penaltyRow.addTile(tile);
+        return null;
+      }
     } else {
-      this.penaltyRow.addTile(tile);
+      return this.penaltyRow.addTile(tile);
     }
   }
   roundEnd() {
@@ -35,9 +38,11 @@ export default class Board {
 
     // subtract penalties
     score += this.penaltyRow.score();
-    this.penaltyRow.reset();
 
     this.score = score;
+
+    //return penalty row tiles to go into discard
+    return this.penaltyRow.reset();
   }
   isGameOver() {
     return this.grid.numRowsComplete > 0;

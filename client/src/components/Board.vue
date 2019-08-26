@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <div class="penalties">
+    <div :class="`penalties ${hoverClass}`" @click="submitRow(null)">
       <div v-for="(square,i) in penaltyRow.slots" :key="i">
         <div>{{square.points}}</div>
         <div :class="squareClass + (square.tile? square.tile.color:'')"></div>
@@ -107,11 +107,11 @@ export default {
   box-shadow: 7px 7px 17px 6px rgba(148, 148, 148, 0.404);
 }
 
-.hoverable > .square {
+.hoverable .square {
   transition: background-color 0.2s ease-in-out;
   cursor: pointer;
 }
-.hoverable:hover > .square {
+.hoverable:hover .square {
   background-color: rgb(202, 202, 202);
 }
 

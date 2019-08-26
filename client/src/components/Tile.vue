@@ -7,10 +7,7 @@ import { mapGetters } from "vuex";
 export default {
   props: ["tile", "selected"],
   computed: {
-    ...mapGetters(["playerTurn", "myBoard"]),
-    myName() {
-      return this.$store.state.myName;
-    },
+    ...mapGetters(["isMyTurn", "myBoard"]),
     selectedTileId() {
       return this.$store.state.game.selectedTileId;
     }
@@ -21,13 +18,14 @@ export default {
         "tile " +
         color +
         (this.selected ? " selected" : "") +
-        (!this.selectedTileId && this.myName === this.playerTurn(this.myName)
-          ? " cursor-pointer"
-          : "")
+        (!this.selectedTileId && this.isMyTurn ? " cursor-pointer" : "")
       );
     },
-    selectTile() {
-      if (this.playerTurn(this.myName) && !this.selectedTileId) {
+    selectTile(tile) {
+      //can't click #1 tile
+      if (tile.color === "one") return;
+
+      if (this.isMyTurn && !this.selectedTileId) {
         this.$socket.emit("TILE_PICKED", {
           playerNum: this.myBoard.id,
           tileId: this.tile.id
