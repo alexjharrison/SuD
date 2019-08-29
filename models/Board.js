@@ -1,6 +1,7 @@
 import Grid from './Grid';
 import ScoringRow from './ScoringRow';
 import PenaltyRow from './PenaltyRow';
+import { finished } from 'stream';
 
 export default class Board {
   constructor(name, id) {
@@ -26,7 +27,9 @@ export default class Board {
   }
   roundEnd() {
     // get rows that are complete
-    const finishedRows = this.scoringRows.filter(row => row.slotsFilled());
+    const finishedRows = this.scoringRows.filter(
+      row => row.slotsFilled() === row.length
+    );
 
     // progressively score each row into the grid
     let score = finishedRows.reduce((acc, row, idx) => {

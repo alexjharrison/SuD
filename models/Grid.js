@@ -18,43 +18,43 @@ export default class Grid {
   }
 
   addTile(row, color) {
-    const col = this.squares[row].indexOf(color);
+    const checkAbove = (row, col) => {
+      if (row - 1 < 0) return;
+      else if (this.squares[row - 1][col].filled) {
+        score++;
+        checkAbove(row - 1, col);
+      }
+    };
+    const checkBelow = (row, col) => {
+      if (row + 1 > 4) return;
+      else if (this.squares[row + 1][col].filled) {
+        score++;
+        checkBelow(row + 1, col);
+      }
+    };
+    const checkLeft = (row, col) => {
+      if (col - 1 < 0) return;
+      else if (this.squares[row][col - 1].filled) {
+        score++;
+        checkLeft(row, col - 1);
+      }
+    };
+    const checkRight = (row, col) => {
+      if (col + 1 > 4) return;
+      else if (this.squares[row][col + 1].filled) {
+        score++;
+        checkRight(row, col + 1);
+      }
+    };
+    const col = this.squares[row].map(({ color }) => color).indexOf(color);
     let score = 1;
+    console.log({ row, color });
     checkAbove(row, col);
     checkBelow(row, col);
     checkLeft(row, col);
     checkRight(row, col);
 
     return score;
-
-    function checkAbove(row, col) {
-      if (row - 1 < 0) return;
-      else if (this.squares[row - 1][col].filled) {
-        score++;
-        checkAbove(row - 1, col);
-      }
-    }
-    function checkBelow(row, col) {
-      if (row + 1 > 4) return;
-      else if (this.squares[row + 1][col].filled) {
-        score++;
-        checkBelow(row + 1, col);
-      }
-    }
-    function checkLeft(row, col) {
-      if (col - 1 < 0) return;
-      else if (this.squares[row][col - 1].filled) {
-        score++;
-        checkLeft(row, col - 1);
-      }
-    }
-    function checkRight(row, col) {
-      if (col + 1 > 4) return;
-      else if (this.squares[row][col + 1].filled) {
-        score++;
-        checkRight(row, col + 1);
-      }
-    }
   }
   scoreBonuses() {
     let bonusScore = 0;

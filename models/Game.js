@@ -67,7 +67,7 @@ export default class Game {
       );
 
       //push unrelated tiles to pot
-      unrelatedTiles.map(tile => this.pot.push({ ...tile }));
+      unrelatedTiles.map(tile => this.pot.push(tile));
 
       // push related tiles to player board
       relatedTiles.map(tile => {
